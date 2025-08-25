@@ -9,8 +9,8 @@
 ### 2025-02
 
 ## Integrantes
-- [Nome](https://github.com/xxx)
-- [Nome](https://github.com/xxx)
+- [Rafael Arkchimor Lucena](https://github.com/rafaarklu)
+- [Enzo Godoy](https://github.com/EnzoGodoy)
 
 ## Cliente do Projeto
 
