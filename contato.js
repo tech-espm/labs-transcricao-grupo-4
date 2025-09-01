@@ -95,7 +95,7 @@
               }
             }
           },
-          "404": { "description": "Transcrição não encontrada" }
+          "404": { "description": "Transcrição não encontrada " }
         }
       }
     },
