@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcrição de Áudio com Whisper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Transcrição de Áudio com Whisper</h1>
+            <p>Transcreva áudios para texto usando a tecnologia OpenAI Whisper</p>
+        </header>
+
+        <div class="card">
+            <h2 class="card-title">
+                <i class="fas fa-upload"></i>Upload de Áudio
+            </h2>
+            
+            <div id="upload-area" class="upload-area">
+                <i class="fas fa-file-audio"></i>
+                <p>Clique para selecionar ou arraste um arquivo de áudio</p>
+                <button class="btn">Selecionar Arquivo</button>
+                <input type="file" id="file-input" accept="audio/*" class="hidden">
+            </div>
+            
+            <div id="file-info" class="hidden">
+                <p><strong>Arquivo selecionado:</strong> <span id="file-name"></span></p>
+                <p><strong>Tamanho:</strong> <span id="file-size"></span></p>
+                <p><strong>Duração:</strong> <span id="file-duration"></span></p>
+            </div>
+            
+            <div id="audio-player" class="audio-player hidden">
+                <audio id="audio-element" controls style="width: 100%"></audio>
+                <div class="audio-controls">
+                    <button id="btn-play" class="btn"><i class="fas fa-play"></i> Reproduzir</button>
+                    <button id="btn-pause" class="btn"><i class="fas fa-pause"></i> Pausar</button>
+                    <button id="btn-restart" class="btn"><i class="fas fa-redo"></i> Reiniciar</button>
+                </div>
+            </div>
+            
+            <div class="format-options">
+                <div class="format-option">
+                    <input type="radio" id="format-txt" name="format" value="txt" checked>
+                    <label for="format-txt">Texto simples</label>
+                </div>
+                <div class="format-option">
+                    <input type="radio" id="format-srt" name="format" value="srt">
+                    <label for="format-srt">Formato SRT (legendas)</label>
+                </div>
+                <div class="format-option">
+                    <input type="radio" id="format-vtt" name="format" value="vtt">
+                    <label for="format-vtt">Formato WebVTT</label>
+                </div>
+            </div>
+            
+            <button id="btn-transcribe" class="btn btn-success" disabled>
+                <i class="fas fa-language"></i> Transcrever Áudio
+            </button>
+        </div>
+
+        <div id="status-area" class="status hidden">
+            <i class="fas fa-sync fa-spin"></i>
+            <span id="status-text">Processando áudio...</span>
+        </div>
+
+        <div class="card transcription-container hidden" id="transcription-result">
+            <h2 class="card-title">
+                <i class="fas fa-file-alt"></i>Transcrição
+            </h2>
+            
+            <div class="transcription-actions" style="margin-bottom: 15px;">
+                <button id="btn-copy" class="btn"><i class="fas fa-copy"></i> Copiar Texto</button>
+                <button id="btn-download" class="btn"><i class="fas fa-download"></i> Baixar Transcrição</button>
+            </div>
+            
+            <div id="transcription-text" class="transcription-text">
+                <!-- A transcrição será inserida aqui -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Powered by OpenAI Whisper API | Desenvolvido para transcrição de áudio em texto</p>
+    </footer>
+
+    <!-- Font Awesome para ícones -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos DOM
+            const fileInput = document.getElementById('file-input');
+            const uploadArea = document.getElementById('upload-area');
+            const fileInfo = document.getElementById('file-info');
+            const fileName = document.getElementById('file-name');
+            const fileSize = document.getElementById('file-size');
+            const fileDuration = document.getElementById('file-duration');
+            const audioPlayer = document.getElementById('audio-player');
+            const audioElement = document.getElementById('audio-element');
+            const btnPlay = document.getElementById('btn-play');
+            const btnPause = document.getElementById('btn-pause');
+            const btnRestart = document.getElementById('btn-restart');
+            const btnTranscribe = document.getElementById('btn-transcribe');
+            const statusArea = document.getElementById('status-area');
+            const statusText = document.getElementById('status-text');
+            const transcriptionResult = document.getElementById('transcription-result');
+            const transcriptionText = document.getElementById('transcription-text');
+            const btnCopy = document.getElementById('btn-copy');
+            const btnDownload = document.getElementById('btn-download');
+            
+            // Variáveis globais
+            let currentAudioFile = null;
+            
+            // Event Listeners
+            uploadArea.addEventListener('click', () => fileInput.click());
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--accent-color)';
+                uploadArea.style.backgroundColor = 'rgba(76, 177, 167, 0.1)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = 'var(--gray-light)';
+                uploadArea.style.backgroundColor = 'transparent';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--gray-light)';
+                uploadArea.style.backgroundColor = 'transparent';
+                
+                if (e.dataTransfer.files.length) {
+                    handleAudioFile(e.dataTransfer.files[0]);
+                }
+            });
+            
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    handleAudioFile(fileInput.files[0]);
+                }
+            });
+            
+            btnPlay.addEventListener('click', () => audioElement.play());
+            btnPause.addEventListener('click', () => audioElement.pause());
+            btnRestart.addEventListener('click', () => {
+                audioElement.currentTime = 0;
+                audioElement.play();
+            });
+            
+            btnTranscribe.addEventListener('click', transcribeAudio);
+            
+            btnCopy.addEventListener('click', copyTranscription);
+            btnDownload.addEventListener('click', downloadTranscription);
+            
+            // Funções
+            function handleAudioFile(file) {
+                if (!file.type.startsWith('audio/')) {
+                    alert('Por favor, selecione um arquivo de áudio válido.');
+                    return;
+                }
+                
+                currentAudioFile = file;
+                
+                // Exibir informações do arquivo
+                fileName.textContent = file.name;
+                fileSize.textContent = formatFileSize(file.size);
+                
+                // Criar URL para o áudio e configurar o player
+                const audioURL = URL.createObjectURL(file);
+                audioElement.src = audioURL;
+                
+                // Tentar obter a duração do áudio
+                const audio = new Audio();
+                audio.src = audioURL;
+                audio.addEventListener('loadedmetadata', () => {
+                    fileDuration.textContent = formatDuration(audio.duration);
+                });
+                
+                // Exibir elementos ocultos
+                fileInfo.classList.remove('hidden');
+                audioPlayer.classList.remove('hidden');
+                btnTranscribe.disabled = false;
+                
+                // Ocultar resultados anteriores
+                transcriptionResult.classList.add('hidden');
+                statusArea.classList.add('hidden');
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+            
+            function formatDuration(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+            
+            function transcribeAudio() {
+                if (!currentAudioFile) return;
+                
+                // Exibir status de processamento
+                statusArea.classList.remove('hidden');
+                statusArea.className = 'status status-processing';
+                statusText.textContent = 'Processando áudio...';
+                
+                // Simular o processo de transcrição (substitua por chamada real à API)
+                setTimeout(() => {
+                    // Esta é uma simulação - na implementação real, você faria uma chamada à API Whisper
+                    simulateTranscriptionResult();
+                }, 3000);
+            }
+            
+            function simulateTranscriptionResult() {
+                // Simular uma resposta da API (substitua pela implementação real)
+                statusArea.className = 'status status-completed';
+                statusText.textContent = 'Transcrição concluída com sucesso!';
+                
+                // Exibir resultado simulado
+                transcriptionResult.classList.remove('hidden');
+                
+                // Obter o formato selecionado
+                const format = document.querySelector('input[name="format"]:checked').value;
+                
+                // Gerar conteúdo de exemplo baseado no formato
+                if (format === 'srt') {
+                    transcriptionText.innerHTML = 
+                        `1
+00:00:01,000 --> 00:00:04,000
+Olá, este é um exemplo de transcrição em formato SRT.
+
+2
+00:00:05,000 --> 00:00:09,000
+O Whisper é uma ferramenta incrível para transcrição de áudio.
+
+3
+00:00:10,000 --> 00:00:15,000
+Esta é apenas uma simulação. Na implementação real, você receberá a transcrição verdadeira.`;
+                } else if (format === 'vtt') {
+                    transcriptionText.innerHTML = 
+                        `WEBVTT
+
+00:00:01.000 --> 00:00:04.000
+Olá, este é um exemplo de transcrição em formato WebVTT.
+
+00:00:05.000 --> 00:00:09.000
+O Whisper é uma ferramenta incrível para transcrição de áudio.
+
+00:00:10.000 --> 00:00:15.000
+Esta é apenas uma simulação. Na implementação real, você receberá a transcrição verdadeira.`;
+                } else {
+                    transcriptionText.innerHTML = 
+                        `Olá, este é um exemplo de transcrição em texto simples.
+
+O Whisper é uma ferramenta incrível para transcrição de áudio.
+
+Esta é apenas uma simulação. Na implementação real, você receberá a transcrição verdadeira do seu áudio.
+
+A transcrição real conterá todo o conteúdo do seu arquivo de áudio convertido em texto, com pontuação e formatação adequadas.`;
+                }
+            }
+            
+            function copyTranscription() {
+                const textToCopy = transcriptionText.textContent;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert('Transcrição copiada para a área de transferência!');
+                }).catch(err => {
+                    console.error('Erro ao copiar texto: ', err);
+                });
+            }
+            
+            function downloadTranscription() {
+                const format = document.querySelector('input[name="format"]:checked').value;
+                const textToDownload = transcriptionText.textContent;
+                const blob = new Blob([textToDownload], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `transcricao.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                
+                // Limpeza
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>
