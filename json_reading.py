@@ -11,8 +11,8 @@ with open("mocado.json", "r", encoding="utf-8") as arquivo_json:
 
 
 
-for word in transcript["words"]:
-	print(f"{(word["start"] *1000):.0f}\t{(word["end"] * 1000):.0f}\t{word["word"]}")
+#for word in transcript["words"]:
+#	print(f"{(word["start"] *1000):.0f}\t{(word["end"] * 1000):.0f}\t{word["word"]}")
  
  
  ## Script para separar em frases
@@ -25,21 +25,20 @@ for word in transcript["words"]:
 
 word_end = 0
 phrase= []
+lista = [phrase]
 for word in transcript["words"]:
     word_start = word["start"] * 1000
     phrase.append(word["word"])
-    
-    
-    if len(phrase) == 5:
-        print(phrase)
-        phrase.clear()
-    
+
     if word_start - word_end >= 100:
         print(phrase)
-        phrase.clear()
-            
-        
-    
+        phrase = []
+        lista.append(phrase)
+    elif len(phrase) >= 5:
+        print(phrase)
+        phrase = []
+        lista.append(phrase)
+
     word_end = word["end"] * 1000
     
 

@@ -29,10 +29,9 @@ def print_word_timings():
 
 
 def get_word_timings_from_file_bytes(file_bytes, filename):
-    # Cria um buffer em memória a partir do arquivo enviado
     audio_buffer = io.BytesIO(file_bytes)
-    audio_buffer.name = filename  # importante: define o nome com extensão correta
-    
+    audio_buffer.name = filename  
+
     transcription = client.audio.transcriptions.create(
         file=audio_buffer,
         model="whisper-1",
