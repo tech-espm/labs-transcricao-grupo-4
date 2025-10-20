@@ -11,7 +11,7 @@ def index():
     return render_template('index/Landing.html', titulo='Landing Page')
 
 @app.get('/transcription')
-def index():
+def transcription():
     return render_template('index/Transcription.html', titulo='Transcription Page')
 
 

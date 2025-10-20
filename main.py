@@ -27,3 +27,20 @@ async def upload_audio(file: UploadFile = File(...)):
         return JSONResponse(content=timings)
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
+    
+    
+
+
+#mock
+jobs_status = {
+    "123": "processing",
+    "456": "done",
+    "789": "error"
+}
+
+
+
+@app.get("/api/jobs/{job_id}")
+def get_job_status(job_id: str):
+    status = jobs_status.get(job_id, "not_found")
+    return JSONResponse(content={"job_id": job_id, "status": status})

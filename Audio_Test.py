@@ -7,6 +7,7 @@ client = OpenAI(api_key=api_key)
 
 def print_word_timings():
     audio_path = "./Audio/q_isso_renan.mp3"
+    
     with open(audio_path, "rb") as audio_file:
         transcription = client.audio.transcriptions.create(
             file=audio_file,
@@ -16,6 +17,7 @@ def print_word_timings():
         )
     
     return [
+        
         {
             "start": word.start,
             "end": word.end,

@@ -31,12 +31,222 @@
 
 	{% block head %}{% endblock %}
 
+
+
+
+<style>
+        /* Estilização Básica (CSS) */
+        :root {
+            --cor-principal: #007bff;
+            --cor-secundaria: #6c757d;
+            --cor-fundo: #f8f9fa;
+            --cor-texto: #343a40;
+            --cor-branco: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--cor-principal);
+            color: var(--cor-branco);
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        #hero {
+            background-color: var(--cor-branco);
+            padding: 80px 0;
+        }
+
+        #hero h2 {
+            font-size: 3em;
+            color: var(--cor-principal);
+            margin-bottom: 20px;
+        }
+
+        #hero p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--cor-principal);
+            color: var(--cor-branco);
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+
+        #funcionalidades, #motivacao {
+            background-color: var(--cor-fundo);
+        }
+        
+        #funcionalidades h3, #motivacao h3, #cta-final h3 {
+            font-size: 2em;
+            color: var(--cor-principal);
+            margin-bottom: 40px;
+        }
+
+        .feature-grid {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            flex: 1;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: left;
+            background-color: var(--cor-branco);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-item h4 {
+            color: var(--cor-secundaria);
+            margin-top: 0;
+        }
+        
+        .destaque {
+            font-weight: bold;
+            color: #d9534f; /* Uma cor de destaque */
+        }
+
+        #motivacao p {
+            font-size: 1.1em;
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            text-align: left;
+        }
+        
+        #cta-final {
+            background-color: var(--cor-principal);
+            color: var(--cor-branco);
+            padding: 50px 0;
+        }
+        
+        #cta-final .cta-button {
+            background-color: var(--cor-branco);
+            color: var(--cor-principal);
+        }
+        
+        #cta-final .cta-button:hover {
+            background-color: #e2e6ea;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: var(--cor-texto);
+            color: var(--cor-branco);
+            font-size: 0.9em;
+        }
+        
+    </style>
+
 </head>
 <body>
 
+   <header>
+        <div class="container">
+            <h1>Audio Transcription</h1>
+            <h2>LAB experimental 2025.2  4 Semestre</h2>
+            <p>API de Transcrição baseada em Whisper com Timestamps e Saída JSON Estruturada.</p>
+        </div>
+    </header>
 
-    #LANDING PAGE AQUI#
+    <section id="hero">
+        <div class="container">
+            <h2>Arquivo de áudio → Dados Analíticos Prontos para Uso</h2>
+            <p>Transforme qualquer arquivo de áudio em uma estrutura detalhada de palavras e frases com timestamps precisos.</p>
+        </div>
+    </section>
 
+    <section id="funcionalidades">
+        <div class="container">
+            <h3>Processamento e Saída de Dados Estruturados</h3>
+            
+            <div class="feature-grid">
+                
+                <div class="feature-item">
+                    <h4>1. Transcrição com Whisper </h4>
+                    <p>Utilizamos o modelo Whisper para alta precisão. Qualquer formato de entrada (WAV, MP3, M4A, OGG) é aceito </p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>2. Saída JSON por Palavra (Transcript)</h4>
+                    <p>O resultado primário é uma lista de palavras com timestamps de início e fim (start/end), perfeito para sincronização de vídeo ou análise linguística.</p>
+                    <p class="code-block">
+                        {<br>
+                        &nbsp;&nbsp;"word":"olá",<br>
+                        &nbsp;&nbsp;"start":0.52,<br>
+                        &nbsp;&nbsp;"end":0.78<br>
+                        }
+                    </p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>3. Agrupamento em Sentenças</h4>
+                    <p>Transformamos a lista de palavras em frases legíveis usando um algoritmo determinístico baseado em pausas e em um máximo de palavras. Você obtém a frase completa com seus próprios timestamps.</p>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="motivacao">
+        <div class="container">
+            <h3>Construído pelo Grupo 4 do 4 semestre do curso de Ciências de Dados e Negócios da ESPM (2025.2)</h3>
+            
+            <div class="motivo-item">
+                <h4>API Robusta e Limpa</h4>
+                <p>Funcionamento é relavivamente simples: foi utilizado a linguagem python com as bibliotecas Flask (criação e gerenciamento de rotas), FastAPI (parte de backend de envio de arquivo para transcrição e resposta em JSON) e o modelo de IA Whisper da OpenAI</p>
+                <p>Tecnologia: **Backend Python (FastAPI), Storage **S3** (em produção).</p>
+            </div>
+
+            
+        </div>
+    </section>
+    
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 AudioTrnascription. Desenvolvido com FastAPI e Flask.</p>
+        </div>
+    </footer>
 
 
 </body>
