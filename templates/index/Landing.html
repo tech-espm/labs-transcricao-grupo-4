@@ -2,40 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
 <head>
     <meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	{% if titulo %}
-	<title>{{ titulo }} - landingpage</title>
-	{% else %}
-	<title>Landingpage</title>
-	{% endif %}
+    {% if titulo %}
+    <title>{{ titulo }} - Landingpage</title>
+    {% else %}
+    <title>Landingpage</title>
+    {% endif %}
 
-
-    <!--
-		https://getbootstrap.com/docs/4.6/getting-started/introduction/
-	-->
+    <!-- Bootstrap e dependências -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 
-	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css" />
-	<link rel="stylesheet" type="text/css" href="/static/css/estilo.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/estilo.css" />
 
-	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript" src="/static/js/sweetalert2.min.js"></script>
-	<script type="text/javascript" src="/static/js/projeto.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="/static/js/sweetalert2.min.js"></script>
+    <script type="text/javascript" src="/static/js/projeto.js"></script>
 
-	{% block head %}{% endblock %}
+    {% block head %}{% endblock %}
 
-
-
-
-<style>
-        /* Estilização Básica (CSS) */
+    <style>
+        /* =================== Estilização Básica (CSS) =================== */
         :root {
             --cor-principal: #007bff;
             --cor-secundaria: #6c757d;
@@ -45,7 +39,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--cor-fundo);
@@ -111,7 +105,7 @@
         #funcionalidades, #motivacao {
             background-color: var(--cor-fundo);
         }
-        
+
         #funcionalidades h3, #motivacao h3, #cta-final h3 {
             font-size: 2em;
             color: var(--cor-principal);
@@ -123,10 +117,11 @@
             justify-content: space-around;
             gap: 30px;
             margin-top: 40px;
+            flex-wrap: wrap;
         }
 
         .feature-item {
-            flex: 1;
+            flex: 1 1 300px;
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -139,10 +134,10 @@
             color: var(--cor-secundaria);
             margin-top: 0;
         }
-        
+
         .destaque {
             font-weight: bold;
-            color: #d9534f; /* Uma cor de destaque */
+            color: #d9534f;
         }
 
         #motivacao p {
@@ -151,18 +146,18 @@
             margin: 0 auto 20px auto;
             text-align: left;
         }
-        
+
         #cta-final {
             background-color: var(--cor-principal);
             color: var(--cor-branco);
             padding: 50px 0;
         }
-        
+
         #cta-final .cta-button {
             background-color: var(--cor-branco);
             color: var(--cor-principal);
         }
-        
+
         #cta-final .cta-button:hover {
             background-color: #e2e6ea;
         }
@@ -174,23 +169,54 @@
             color: var(--cor-branco);
             font-size: 0.9em;
         }
-        
+
+        /* ===== BOTÃO PRINCIPAL DE TRANSCRIÇÃO ===== */
+        #motivacao .feature-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        #motivacao .feature-item button {
+            background-color: var(--cor-principal);
+            color: var(--cor-branco);
+            border: none;
+            font-size: 1.8em;
+            font-weight: 700;
+            padding: 25px 70px;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #motivacao .feature-item button:hover {
+            background-color: #0056b3;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 86, 179, 0.6);
+        }
+
+        #motivacao .feature-item button:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 12px rgba(0, 86, 179, 0.4);
+        }
     </style>
 
 </head>
 <body>
 
-   <header>
+    <header>
         <div class="container">
             <h1>Audio Transcription</h1>
-            <h2>LAB experimental 2025.2  4 Semestre</h2>
+            <h2>LAB Experimental 2025.2 — 4º Semestre</h2>
             <p>API de Transcrição baseada em Whisper com Timestamps e Saída JSON Estruturada.</p>
         </div>
     </header>
 
     <section id="hero">
         <div class="container">
-            <h2>Arquivo de áudio → Dados Analíticos Prontos para Uso</h2>
+            <h2>Arquivo de Áudio → Dados Analíticos Prontos para Uso</h2>
             <p>Transforme qualquer arquivo de áudio em uma estrutura detalhada de palavras e frases com timestamps precisos.</p>
         </div>
     </section>
@@ -198,30 +224,28 @@
     <section id="funcionalidades">
         <div class="container">
             <h3>Processamento e Saída de Dados Estruturados</h3>
-            
+
             <div class="feature-grid">
-                
                 <div class="feature-item">
-                    <h4>1. Transcrição com Whisper </h4>
-                    <p>Utilizamos o modelo Whisper para alta precisão. Qualquer formato de entrada (WAV, MP3, M4A, OGG) é aceito </p>
+                    <h4>1. Transcrição com Whisper</h4>
+                    <p>Utilizamos o modelo Whisper para alta precisão. Qualquer formato de entrada (WAV, MP3, M4A, OGG) é aceito.</p>
                 </div>
-                
+
                 <div class="feature-item">
                     <h4>2. Saída JSON por Palavra (Transcript)</h4>
                     <p>O resultado primário é uma lista de palavras com timestamps de início e fim (start/end), perfeito para sincronização de vídeo ou análise linguística.</p>
                     <p class="code-block">
                         {<br>
-                        &nbsp;&nbsp;"word":"olá",<br>
-                        &nbsp;&nbsp;"start":0.52,<br>
-                        &nbsp;&nbsp;"end":0.78<br>
+                        &nbsp;&nbsp;"word": "olá",<br>
+                        &nbsp;&nbsp;"start": 0.52,<br>
+                        &nbsp;&nbsp;"end": 0.78<br>
                         }
                     </p>
                 </div>
-                
+
                 <div class="feature-item">
                     <h4>3. Agrupamento em Sentenças</h4>
                     <p>Transformamos a lista de palavras em frases legíveis usando um algoritmo determinístico baseado em pausas e em um máximo de palavras. Você obtém a frase completa com seus próprios timestamps.</p>
-                    
                 </div>
             </div>
         </div>
@@ -229,25 +253,25 @@
 
     <section id="motivacao">
         <div class="container">
-            <h3>Construído pelo Grupo 4 do 4 semestre do curso de Ciências de Dados e Negócios da ESPM (2025.2)</h3>
-            
+            <h3>Construído pelo Grupo 4 do 4º Semestre do curso de Ciências de Dados e Negócios da ESPM (2025.2)</h3>
+
             <div class="motivo-item">
                 <h4>API Robusta e Limpa</h4>
-                <p>Funcionamento é relavivamente simples: foi utilizado a linguagem python com as bibliotecas Flask (criação e gerenciamento de rotas), FastAPI (parte de backend de envio de arquivo para transcrição e resposta em JSON) e o modelo de IA Whisper da OpenAI</p>
-                <p>Tecnologia: **Backend Python (FastAPI), Storage **S3** (em produção).</p>
+                <p>O funcionamento é relativamente simples: utilizamos Python com as bibliotecas Flask (para criação e gerenciamento de rotas), FastAPI (backend para envio e resposta JSON) e o modelo de IA Whisper da OpenAI.</p>
+                <p>Tecnologia: <strong>Backend Python (FastAPI)</strong>, <strong>Flask</strong>.</p>
             </div>
 
-            
+            <div class="feature-item">
+                <button onclick="window.location.href='/transcription'">Transcrever Aqui!</button>
+            </div>
         </div>
     </section>
-    
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 AudioTrnascription. Desenvolvido com FastAPI e Flask.</p>
+            <p>&copy; 2025 AudioTranscription. Desenvolvido com FastAPI e Flask.</p>
         </div>
     </footer>
-
 
 </body>
 </html>
