@@ -174,8 +174,8 @@ footer {
     <main>
         <section id="upload-area">
             <h2>1️⃣ Envie ou grave seu áudio</h2>
-            <form id="form envio">
-                <input type="file" id="audio-file" name="audio-file" />
+            <form id="form-envio">
+                <input type="file" id="file" name="file" />
                 <button type="button" onclick="enviar()"> Enviar Arquivo</button>
             </form>
             
@@ -229,29 +229,64 @@ footer {
 </body>
 </html>
 
+
+
+
+
+
+
+
+
+
+
 <script>
+async function enviar() {
+    try {
+        const form = document.getElementById('form-envio');
+        const formData = new FormData(form);
 
+        // Faz o POST para sua API
+        const response = await fetch('http://127.0.0.1:8000/upload-audio/', {
+            method: 'POST',
+            body: formData
+        });
 
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
 
+        // Transcrição recebida em JSON
+        const transcription = await response.json();
+        console.log('Transcrição recebida:', transcription);
 
+        // Exibe o JSON completo na tela
+        showJson(transcription);
 
-
-
-
-async function enviar(){
-        const response = await fetch('http://localhost:8000/upload-audio/', {
-        method: 'POST',
-        body: new FormData(document.getElementById('form-envio'))
-    }
-{
-    });
-    }
-
-    const transcription = await response.json();
-    console.log('Transcrição recebida:', transcription);
-        
-     catch (error) {
+    } catch (error) {
         console.error('Erro ao enviar arquivo:', error);
+        alert('Erro ao enviar o arquivo. Veja o console para mais detalhes.');
+    }
+}
+
+// Mostra o JSON de forma formatada na área de resultados
+function showJson(jsonData) {
+    let container = document.getElementById('json-output-container');
+
+    // Cria o container se não existir
+    if (!container) {
+        container = document.createElement('pre');
+        container.id = 'json-output-container';
+        document.getElementById('results').appendChild(container);
     }
 
+    container.style.textAlign = 'left';
+    container.style.background = '#f4f4f4';
+    container.style.padding = '15px';
+    container.style.borderRadius = '10px';
+    container.style.overflowX = 'auto';
+    container.style.whiteSpace = 'pre-wrap';
+
+    // Exibe o JSON formatado
+    container.textContent = JSON.stringify(jsonData, null, 2);
+}
 </script>
