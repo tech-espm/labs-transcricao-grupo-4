@@ -1,43 +1,292 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-	{% if titulo %}
-	<title>{{ titulo }} - Transcription</title>
-	{% else %}
-	<title>Transcription</title>
-	{% endif %}
 
 
-    <!--
-		https://getbootstrap.com/docs/4.6/getting-started/introduction/
-	-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcrever Áudio</title>
+    <link rel="stylesheet" href="transcription.css">
 
-	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css" />
-	<link rel="stylesheet" type="text/css" href="/static/css/estilo.css" />
 
-	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript" src="/static/js/sweetalert2.min.js"></script>
-	<script type="text/javascript" src="/static/js/projeto.js"></script>
+<style>
 
-	{% block head %}{% endblock %}
+:root {
+    --cor-principal: #007bff;
+    --cor-branco: #fff;
+    --cor-fundo: #f8f9fa;
+    --cor-texto: #333;
+    --cor-secundaria: #e9ecef;
+}
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    margin: 0;
+    text-align: center;
+}
+
+header {
+    background: var(--cor-principal);
+    color: var(--cor-branco);
+    padding: 30px 15px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+main {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 50px;
+    background: var(--cor-branco);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.upload-label {
+    background: var(--cor-principal);
+    color: var(--cor-branco);
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.upload-label:hover {
+    background: #0056b3;
+}
+
+#record-btn {
+    background: #28a745;
+    color: var(--cor-branco);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#record-btn:hover {
+    background: #1e7e34;
+}
+
+.divider {
+    margin: 10px 0;
+    font-weight: bold;
+    color: #666;
+}
+
+.progress-bar {
+    background: var(--cor-secundaria);
+    border-radius: 20px;
+    height: 15px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#progress-fill {
+    background: var(--cor-principal);
+    height: 100%;
+    width: 0%;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.tab-btn {
+    background: var(--cor-secundaria);
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab-btn.active, .tab-btn:hover {
+    background: var(--cor-principal);
+    color: var(--cor-branco);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+}
+
+.back-btn button {
+    background: var(--cor-principal);
+    color: var(--cor-branco);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.back-btn button:hover {
+    background: #0056b3;
+}
+
+footer {
+    background: var(--cor-secundaria);
+    padding: 15px;
+    color: #555;
+}
+</style>
 </head>
 <body>
+    <header>
+        <h1>Transcrever Áudio</h1>
+        <p>Envie ou grave um áudio para gerar a transcrição automaticamente.</p>
+    </header>
 
 
-    #Transcription page aqui#
+
+	<!-- Area principal, onde vai a transcrição e onde deve ser modificado para puxar do fast api e devolver 
+	 o JSON, e a parte de gravar um arquivo diretamente aqui-->
+    <main>
+        <section id="upload-area">
+            <h2>1️⃣ Envie ou grave seu áudio</h2>
+            <form id="form-envio">
+                <input type="file" id="file" name="file" />
+                <button type="button" onclick="enviar()"> Enviar Arquivo</button>
+            </form>
+            
+           
 
 
 
+
+
+
+
+
+		<!-- arrumar o botão para aparecer palavras e sentenças-->
+        <section id="results">
+            <h2>3️⃣ Resultado da Transcrição</h2>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="words">Palavras</button>
+                <button class="tab-btn" data-tab="sentences">Sentenças</button>
+            </div>
+
+            <div id="words" class="tab-content active">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Palavra</th>
+                            <th>Início (s)</th>
+                            <th>Fim (s)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="word-list">
+                        <tr><td colspan="3">Nenhuma palavra transcrita ainda.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="sentences" class="tab-content">
+                <ul id="sentence-list">
+                    <li>Nenhuma sentença gerada ainda.</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="back-btn">
+            <button onclick="window.location.href='index.html'">⬅ Voltar para Início</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>Desenvolvido para demonstrar o uso do Whisper 2</p>
+    </footer>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+async function enviar() {
+    try {
+        const form = document.getElementById('form-envio');
+        const formData = new FormData(form);
+
+        // Faz o POST para sua API
+        const response = await fetch('http://127.0.0.1:8000/upload-audio/', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+
+        // Transcrição recebida em JSON
+        const transcription = await response.json();
+        console.log('Transcrição recebida:', transcription);
+
+        // Exibe o JSON completo na tela
+        showJson(transcription);
+
+    } catch (error) {
+        console.error('Erro ao enviar arquivo:', error);
+        alert('Erro ao enviar o arquivo. Veja o console para mais detalhes.');
+    }
+}
+
+// Mostra o JSON de forma formatada na área de resultados
+function showJson(jsonData) {
+    let container = document.getElementById('json-output-container');
+
+    // Cria o container se não existir
+    if (!container) {
+        container = document.createElement('pre');
+        container.id = 'json-output-container';
+        document.getElementById('results').appendChild(container);
+    }
+
+    container.style.textAlign = 'left';
+    container.style.background = '#f4f4f4';
+    container.style.padding = '15px';
+    container.style.borderRadius = '10px';
+    container.style.overflowX = 'auto';
+    container.style.whiteSpace = 'pre-wrap';
+
+    // Exibe o JSON formatado
+    container.textContent = JSON.stringify(jsonData, null, 2);
+}
+</script>

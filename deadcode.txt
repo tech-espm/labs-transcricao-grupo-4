@@ -1,0 +1,17 @@
+ <!--<div class="upload-box">
+            <!--    <label for="audio-file" class="upload-label">Selecione um arquivo de áudio</label>
+            <!--    <input type="file" id="audio-file" accept=".wav,.mp3,.m4a,.ogg">
+            <!--    <p>Formatos aceitos: WAV, MP3, M4A, OGG</p>
+<!--
+            <!--    <div class="divider">ou</div>
+<!--
+            <!--    <button id="record-btn">🎙️ Gravar Áudio</button>
+            <!--    <p id="record-status">Clique em “Gravar Áudio” para começar</p>
+            <!--</div>
+        </section>
+
+        <!-- Aqui vai a parte de progresso da transcrição-->
+
+
+
+
