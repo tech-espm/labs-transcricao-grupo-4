@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Áudio para Legenda (SRT)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">A</div>
+      <div>
+        <h1>Áudio para Legenda (SRT)</h1>
+        <p class="lead">Envie um arquivo de áudio e obtenha legendas em formato SRT. Use modo servidor (recomendado) ou modo microfone como fallback.</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="uploader">
+        <div class="left">
+          <div>
+            <input id="audioFile" type="file" accept="audio/*" style="display:none">
+            <button id="chooseBtn" class="btn ghost">Escolher Arquivo de Áudio</button>
+          </div>
+          <div class="file-info">
+            <div class="file-name" id="fname">Nenhum áudio selecionado</div>
+            <div class="file-meta" id="fmeta">Tamanho: — · Duração: —</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="transcribeServer" class="btn">Transcrever (modo servidor)</button>
+          <button id="transcribeMic" class="btn ghost">Transcrever (modo microfone)</button>
+          <button id="generateSRT" class="btn" disabled>Gerar SRT</button>
+        </div>
+      </div>
+
+      <div class="status" id="status">Status: aguardando arquivo</div>
+
+      <div class="result">
+        <div class="box">
+          <label>Transcrição (texto)</label>
+          <textarea id="transcript" placeholder="Transcrição aparecerá aqui..."></textarea>
+          <small>Se o servidor retornar timestamps, a SRT será mais precisa. Caso retorne só texto, o script dividirá em blocos aproximados.</small>
+        </div>
+
+        <div class="box">
+          <label>Legenda (SRT preview)</label>
+          <textarea id="srtPreview" placeholder="Conteúdo SRT gerado..." readonly></textarea>
+          <div class="flex-row">
+            <button id="downloadSRT" class="btn" disabled>Baixar .srt</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <small><strong>Importante:</strong> o modo servidor exige um endpoint que processe o áudio com um motor de ASR (Whisper, OpenAI, Google Speech-to-Text, etc.). O formato de resposta esperado está nos comentários do código.</small>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

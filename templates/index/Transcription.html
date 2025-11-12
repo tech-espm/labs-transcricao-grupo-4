@@ -261,9 +261,9 @@ footer {
 
         
 
-        <div class="back-btn">
-            <button onclick="window.location.href='index.html'">⬅ Voltar para Início</button>
-        </div>
+    <div class="back-btn">
+    <a href="http://127.0.0.1:5000/" class="back-btn-link">⬅ Voltar para Início</a>
+    </div>
     </main>
 
     <footer>
@@ -411,12 +411,38 @@ async function enviarGravacao(audioBlob) {
 
         const transcription = await response.json();
         console.log("Transcrição da gravação:", transcription);
-        showJson(transcription); // usa a função que já existe no seu HTML
+
+        // Mostra o container de resultados da gravação
+        const resultsContainer = document.getElementById("recording-results");
+        resultsContainer.style.display = "block";
+
+        // Exibe o JSON formatado dentro da seção de gravação
+        showJsonRecording(transcription);
+
         recordingStatus.textContent = "✅ Transcrição concluída!";
     } catch (error) {
         console.error("Erro ao enviar gravação:", error);
         recordingStatus.textContent = "❌ Erro ao enviar gravação.";
     }
+}
+
+function showJsonRecording(jsonData) {
+    let container = document.getElementById('recording-json-output-container');
+
+    if (!container) {
+        container = document.createElement('pre');
+        container.id = 'recording-json-output-container';
+        document.getElementById('recording-results').appendChild(container);
+    }
+
+    container.style.textAlign = 'left';
+    container.style.background = '#f4f4f4';
+    container.style.padding = '15px';
+    container.style.borderRadius = '10px';
+    container.style.overflowX = 'auto';
+    container.style.whiteSpace = 'pre-wrap';
+
+    container.textContent = JSON.stringify(jsonData, null, 2);
 }
 
 
