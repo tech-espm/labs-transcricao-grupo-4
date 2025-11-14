@@ -2,235 +2,240 @@
 <html lang="pt-BR">
 <head>
 
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transcrever Áudio</title>
     <link rel="stylesheet" href="transcription.css">
 
-
 <style>
+/* Modernized styling (only CSS changed) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap');
 
-:root {
-    --cor-principal: #007bff;
-    --cor-branco: #fff;
-    --cor-fundo: #f8f9fa;
-    --cor-texto: #333;
-    --cor-secundaria: #e9ecef;
+:root{
+  --bg-900: #07080a;
+  --bg-800: #0d1115;
+  --panel: rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.06);
+  --muted: #9aa0a6;
+  --accent: #c7ff00; /* neon lime */
+  --accent-700: #a6e000;
+  --white: #f5f7fa;
+  --radius: 14px;
+  --shadow: 0 10px 30px rgba(2,6,23,0.6);
+
+  /* NOVAS CORES DE LEITURA */
+  --card-light: #ffffff12;
+  --text-dark: #0d1115;
+  --box-light: #f7f9fa;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-    margin: 0;
-    text-align: center;
+/* Base */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: 'Montserrat', system-ui;
+  color:var(--white);
+  background: linear-gradient(180deg, var(--bg-900) 0%, var(--bg-800) 60%, #071019 100%);
+  line-height:1.5;
 }
 
-header {
-    background: var(--cor-principal);
-    color: var(--cor-branco);
-    padding: 30px 15px;
+/* Header */
+header{
+  position:sticky;
+  top:0;
+  z-index:90;
+  background: linear-gradient(180deg, rgba(7,8,10,0.55), rgba(7,8,10,0.25));
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color:var(--white);
+  padding:18px 14px;
+  text-align:center;
+}
+header h1{ margin:0; font-size:1.6rem; font-weight:700; }
+header p{ margin:6px 0 0 0; color:var(--muted); font-size:0.95rem; }
+
+/* Main container */
+main{
+  width:92%;
+  max-width:980px;
+  margin:36px auto;
+  padding:0 12px 48px;
 }
 
-h1 {
-    margin: 0;
-    font-size: 2em;
+/* Panels */
+section{
+  margin-bottom:34px;
+  background: var(--card-light);
+  border-radius: var(--radius);
+  padding:26px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--glass-border);
+  transition: 260ms;
 }
 
-main {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 20px;
+/* “Enviar arquivo” */
+#form-envio input[type="file"]{
+  background: transparent;
+  color: var(--white);
+  border: 1px dashed rgba(255,255,255,0.15);
+  padding:10px 12px;
+  border-radius:10px;
+  cursor:pointer;
 }
 
-section {
-    margin-bottom: 50px;
-    background: var(--cor-branco);
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+#form-envio button{
+  background: linear-gradient(90deg, var(--accent), var(--accent-700));
+  color: var(--text-dark);
+  padding:10px 20px;
+  border-radius:999px;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+  transition: 280ms;
+}
+#form-envio button:hover{
+  transform:translateY(-4px);
+  filter:brightness(1.03);
+  box-shadow: 0 18px 40px rgba(199,255,0,0.25);
 }
 
-.upload-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+/* Recording controls */
+.recording-controls{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:center;
+}
+.record-btn{
+  background: linear-gradient(90deg, var(--accent), var(--accent-700));
+  color:#081010;
+  border:none;
+  padding:10px 18px;
+  border-radius:999px;
+  font-weight:700;
+  cursor:pointer;
+  transition:260ms;
+}
+.record-btn:hover:not(:disabled){ transform:translateY(-4px); }
+
+/* Tabs */
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:16px;
+}
+.tab-btn{
+  background: transparent;
+  border:1px solid rgba(255,255,255,0.10);
+  color:var(--white);
+  padding:8px 16px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:260ms;
+}
+.tab-btn.active{
+  background: var(--accent);
+  color:var(--text-dark);
+  border-color:var(--accent);
 }
 
-.upload-label {
-    background: var(--cor-principal);
-    color: var(--cor-branco);
-    padding: 12px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: 0.3s;
+/* Tabelas – AGORA EM FUNDO CLARO PARA VISIBILIDADE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  background: var(--box-light);
+  color:var(--text-dark);
+  border-radius:10px;
+  overflow:hidden;
+}
+th,td{
+  padding:12px 10px;
+  border-bottom:1px solid #e4e4e4;
+}
+th{
+  background:#e9ecef;
+  font-weight:700;
 }
 
-.upload-label:hover {
-    background: #0056b3;
+/* JSON – AGORA VISÍVEL EM TEMA CLARO */
+pre{
+  background: var(--box-light);
+  color: var(--text-dark);
+  padding:16px;
+  border-radius:10px;
+  font-size:0.9rem;
+  border: 1px solid #e0e0e0;
+  white-space:pre-wrap;
 }
 
-#record-btn {
-    background: #28a745;
-    color: var(--cor-branco);
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-#record-btn:hover {
-    background: #1e7e34;
-}
-
-.divider {
-    margin: 10px 0;
-    font-weight: bold;
-    color: #666;
-}
-
-.progress-bar {
-    background: var(--cor-secundaria);
-    border-radius: 20px;
-    height: 15px;
-    width: 100%;
-    margin-top: 10px;
-}
-
-#progress-fill {
-    background: var(--cor-principal);
-    height: 100%;
-    width: 0%;
-    border-radius: 20px;
-    transition: width 0.4s ease;
-}
-
-.tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-}
-
-.tab-btn {
-    background: var(--cor-secundaria);
-    border: none;
-    padding: 10px 20px;
-    margin: 0 5px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.tab-btn.active, .tab-btn:hover {
-    background: var(--cor-principal);
-    color: var(--cor-branco);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-th, td {
-    border-bottom: 1px solid #ddd;
-    padding: 8px;
-}
-
-.back-btn button {
-    background: var(--cor-principal);
-    color: var(--cor-branco);
-    border: none;
-    padding: 12px 25px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.back-btn button:hover {
-    background: #0056b3;
-}
-
-footer {
-    background: var(--cor-secundaria);
-    padding: 15px;
-    color: #555;
+/* Footer */
+footer{
+  text-align:center;
+  margin-top:30px;
+  padding:18px;
+  color:var(--muted);
 }
 </style>
 </head>
+
 <body>
-    <header>
-        <h1>Transcrever Áudio</h1>
-        <p>Envie ou grave um áudio para gerar a transcrição automaticamente.</p>
-    </header>
 
+<header>
+    <h1>Transcrever Áudio</h1>
+    <p>Envie um arquivo ou grave sua voz para gerar transcrição automática.</p>
+</header>
 
+<main>
 
-	<!-- Area principal, onde vai a transcrição e onde deve ser modificado para puxar do fast api e devolver 
-	 o JSON, e a parte de gravar um arquivo diretamente aqui-->
-    <main>
-        <section id="upload-area">
-            <h2>1️⃣ Envie ou grave seu áudio</h2>
-            <form id="form-envio">
-                <input type="file" id="file" name="file" />
-                <button type="button" onclick="enviar()"> Enviar Arquivo</button>
-            </form>
-            
-           
+<!-- UPLOAD -->
+<section id="upload-area">
+    <h2>📤 Enviar Arquivo de Áudio</h2>
 
+    <form id="form-envio">
+        <input type="file" id="file" name="file" />
+        <button type="button" onclick="enviar()">Enviar Arquivo</button>
+    </form>
 
+    <h2>📝 Resultado da Transcrição</h2>
 
-
-
-
-
-
-		<!-- arrumar o botão para aparecer palavras e sentenças-->
-        <section id="results">
-            <h2>3️⃣ Resultado da Transcrição</h2>
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="words">Palavras</button>
-                <button class="tab-btn" data-tab="sentences">Sentenças</button>
-            </div>
-
-            <div id="words" class="tab-content active">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Palavra</th>
-                            <th>Início (s)</th>
-                            <th>Fim (s)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="word-list">
-                        <tr><td colspan="3">Nenhuma palavra transcrita ainda.</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="sentences" class="tab-content">
-                <ul id="sentence-list">
-                    <li>Nenhuma sentença gerada ainda.</li>
-                </ul>
-            </div>
-        </section>
-
-
-
-<section id="results_from_recording">
-    <h2>2️⃣ Gravar Áudio</h2>
-    <div class="recording-controls">
-        <button id="startRecord" class="record-btn">🎤 Iniciar Gravação</button>
-        <button id="stopRecord" class="record-btn" disabled>⏹️ Parar Gravação</button>
-        <div id="recordingStatus" class="recording-status">Pronto para gravar</div>
-        <audio id="audioPlayback" controls style="display: none; margin-top: 15px;"></audio>
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="words">Palavras</button>
+        <button class="tab-btn" data-tab="sentences">Sentenças</button>
     </div>
 
-    <div id="recording-results" style="display: none;">
+    <div id="words" class="tab-content active">
+        <table>
+            <thead>
+                <tr><th>Palavra</th><th>Início (s)</th><th>Fim (s)</th></tr>
+            </thead>
+            <tbody id="word-list">
+                <tr><td colspan="3">Nenhuma palavra ainda.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="sentences" class="tab-content">
+        <ul id="sentence-list">
+            <li>Nenhuma sentença ainda.</li>
+        </ul>
+    </div>
+</section>
+
+<!-- GRAVAÇÃO -->
+<section id="results_from_recording">
+    <h2>🎙️ Gravar Áudio Agora</h2>
+
+    <div class="recording-controls">
+        <button id="startRecord" class="record-btn">Iniciar Gravação</button>
+        <button id="stopRecord" class="record-btn" disabled>Parar Gravação</button>
+        <div id="recordingStatus" class="recording-status">Pronto para gravar</div>
+        <audio id="audioPlayback" controls style="display:none; margin-top:15px;"></audio>
+    </div>
+
+    <div id="recording-results" style="display:none; margin-top:20px;">
         <h3>Resultado da Transcrição</h3>
+
         <div class="tabs">
             <button class="tab-btn active" data-tab="recorded-words">Palavras</button>
             <button class="tab-btn" data-tab="recorded-sentences">Sentenças</button>
@@ -239,211 +244,125 @@ footer {
         <div id="recorded-words" class="tab-content active">
             <table>
                 <thead>
-                    <tr>
-                        <th>Palavra</th>
-                        <th>Início (s)</th>
-                        <th>Fim (s)</th>
-                    </tr>
+                    <tr><th>Palavra</th><th>Início (s)</th><th>Fim (s)</th></tr>
                 </thead>
                 <tbody id="recorded-word-list">
-                    <tr><td colspan="3">Nenhuma palavra transcrita ainda.</td></tr>
+                    <tr><td colspan="3">Nenhuma palavra ainda.</td></tr>
                 </tbody>
             </table>
         </div>
 
         <div id="recorded-sentences" class="tab-content">
             <ul id="recorded-sentence-list">
-                <li>Nenhuma sentença gerada ainda.</li>
+                <li>Nenhuma sentença ainda.</li>
             </ul>
         </div>
     </div>
 </section>
 
-        
 
-    <div class="back-btn">
-    <a href="http://127.0.0.1:5000/" class="back-btn-link">⬅ Voltar para Início</a>
-    </div>
-    </main>
 
-    <footer>
-        <p>Desenvolvido para demonstrar o uso do Whisper 2</p>
-    </footer>
+<div class="back-btn">
+    <a href="http://127.0.0.1:5000/">⬅ Voltar ao Início</a>
+</div>
+
+</main>
+
+<footer>
+    <p>Desenvolvido para demonstração do Whisper 2</p>
+</footer>
+
 </body>
-</html>
-
-
-
-
-
-
-
-
-
-
 
 <script>
+/* --- ENVIO DE ARQUIVO --- */
 async function enviar() {
     try {
         const form = document.getElementById('form-envio');
         const formData = new FormData(form);
 
-        // Faz o POST para sua API
         const response = await fetch('http://127.0.0.1:8000/upload-audio/', {
             method: 'POST',
             body: formData
         });
 
-        if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`);
-        }
-
-        // Transcrição recebida em JSON
         const transcription = await response.json();
-        console.log('Transcrição recebida:', transcription);
-
-        // Exibe o JSON completo na tela
         showJson(transcription);
-
     } catch (error) {
-        console.error('Erro ao enviar arquivo:', error);
-        alert('Erro ao enviar o arquivo. Veja o console para mais detalhes.');
+        alert("Erro ao enviar arquivo.");
     }
 }
 
-// Mostra o JSON de forma formatada na área de resultados
-function showJson(jsonData) {
-    let container = document.getElementById('json-output-container');
-
-    // Cria o container se não existir
-    if (!container) {
-        container = document.createElement('pre');
-        container.id = 'json-output-container';
-        document.getElementById('results').appendChild(container);
+function showJson(jsonData){
+    let c = document.getElementById("json-output-container");
+    if(!c){
+        c = document.createElement("pre");
+        c.id = "json-output-container";
+        document.querySelector("#results").appendChild(c);
     }
-
-    container.style.textAlign = 'left';
-    container.style.background = '#f4f4f4';
-    container.style.padding = '15px';
-    container.style.borderRadius = '10px';
-    container.style.overflowX = 'auto';
-    container.style.whiteSpace = 'pre-wrap';
-
-    // Exibe o JSON formatado
-    container.textContent = JSON.stringify(jsonData, null, 2);
+    c.textContent = JSON.stringify(jsonData, null, 2);
 }
 
+/* --- GRAVAÇÃO --- */
+let mediaRecorder, audioChunks = [];
 
-
-
-
-
-
-
-
-
-let mediaRecorder;
-let audioChunks = [];
-
-// Botões e elementos da interface
 const startBtn = document.getElementById("startRecord");
 const stopBtn = document.getElementById("stopRecord");
 const audioPlayback = document.getElementById("audioPlayback");
 const recordingStatus = document.getElementById("recordingStatus");
 
-// Iniciar gravação
-startBtn.addEventListener("click", async () => {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
+startBtn.onclick = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+    mediaRecorder = new MediaRecorder(stream);
 
-        audioChunks = [];
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    audioChunks = [];
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
 
-        mediaRecorder.onstart = () => {
-            recordingStatus.textContent = "🎙️ Gravando...";
-            startBtn.disabled = true;
-            stopBtn.disabled = false;
-        };
+    mediaRecorder.onstart = () => {
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+    };
 
-        mediaRecorder.onstop = async () => {
-            recordingStatus.textContent = "⏹️ Gravação finalizada";
-            startBtn.disabled = false;
-            stopBtn.disabled = true;
+    mediaRecorder.onstop = async () => {
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
 
-            // Cria um blob do áudio
-            const audioBlob = new Blob(audioChunks, { type: "audio/mp4" });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            audioPlayback.src = audioUrl;
-            audioPlayback.style.display = "block";
+        const blob = new Blob(audioChunks, { type:"audio/mp4" });
+        audioPlayback.src = URL.createObjectURL(blob);
+        audioPlayback.style.display = "block";
 
-            // Envia automaticamente o áudio para a API
-            await enviarGravacao(audioBlob);
-        };
+        enviarGravacao(blob);
+    };
 
-        mediaRecorder.start();
-    } catch (error) {
-        alert("Erro ao acessar o microfone: " + error.message);
-    }
-});
+    mediaRecorder.start();
+};
 
-// Parar gravação
-stopBtn.addEventListener("click", () => {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        mediaRecorder.stop();
-    }
-});
+stopBtn.onclick = () => mediaRecorder.stop();
 
-// Envia o áudio gravado para a API
-async function enviarGravacao(audioBlob) {
-    const formData = new FormData();
-    formData.append("file", audioBlob, "gravacao.mp4");
+async function enviarGravacao(blob){
+    const fd = new FormData();
+    fd.append("file", blob, "gravacao.mp4");
 
-    recordingStatus.textContent = "⏳ Enviando áudio para transcrição...";
+    const res = await fetch("http://127.0.0.1:8000/upload-audio/", {
+        method:"POST",
+        body:fd
+    });
 
-    try {
-        const response = await fetch("http://127.0.0.1:8000/upload-audio/", {
-            method: "POST",
-            body: formData
-        });
+    const json = await res.json();
+    showJsonRecording(json);
 
-        if (!response.ok) throw new Error("Erro HTTP: " + response.status);
-
-        const transcription = await response.json();
-        console.log("Transcrição da gravação:", transcription);
-
-        // Mostra o container de resultados da gravação
-        const resultsContainer = document.getElementById("recording-results");
-        resultsContainer.style.display = "block";
-
-        // Exibe o JSON formatado dentro da seção de gravação
-        showJsonRecording(transcription);
-
-        recordingStatus.textContent = "✅ Transcrição concluída!";
-    } catch (error) {
-        console.error("Erro ao enviar gravação:", error);
-        recordingStatus.textContent = "❌ Erro ao enviar gravação.";
-    }
+    document.getElementById("recording-results").style.display = "block";
 }
 
-function showJsonRecording(jsonData) {
-    let container = document.getElementById('recording-json-output-container');
-
-    if (!container) {
-        container = document.createElement('pre');
-        container.id = 'recording-json-output-container';
-        document.getElementById('recording-results').appendChild(container);
+function showJsonRecording(jsonData){
+    let c = document.getElementById("recording-json-output-container");
+    if(!c){
+        c = document.createElement("pre");
+        c.id = "recording-json-output-container";
+        document.getElementById("recording-results").appendChild(c);
     }
-
-    container.style.textAlign = 'left';
-    container.style.background = '#f4f4f4';
-    container.style.padding = '15px';
-    container.style.borderRadius = '10px';
-    container.style.overflowX = 'auto';
-    container.style.whiteSpace = 'pre-wrap';
-
-    container.textContent = JSON.stringify(jsonData, null, 2);
+    c.textContent = JSON.stringify(jsonData, null, 2);
 }
-
-
 </script>
+
+</html>
