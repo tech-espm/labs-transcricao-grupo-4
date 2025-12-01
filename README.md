@@ -20,7 +20,6 @@ ESPM
 
 Transcrição de áudio por IA.
 
-
 # Licença
 
 Este projeto é licenciado sob a [MIT License](https://github.com/tech-espm/labs-transcricao-grupo-4/blob/main/LICENSE).
