@@ -190,14 +190,16 @@ footer{
 
 <!-- UPLOAD -->
 <section id="upload-area">
-    <h2>📤 Enviar Arquivo de Áudio</h2>
+    <h2>Enviar Arquivo de Áudio</h2>
 
     <form id="form-envio">
         <input type="file" id="file" name="file" />
         <button type="button" onclick="enviar()">Enviar Arquivo</button>
     </form>
 
-    <h2>📝 Resultado da Transcrição</h2>
+    <h2>Resultado da Transcrição</h2>
+
+    <div id="results"></div>
 
     <div class="tabs">
         <button class="tab-btn active" data-tab="words">Palavras</button>
@@ -224,7 +226,7 @@ footer{
 
 <!-- GRAVAÇÃO -->
 <section id="results_from_recording">
-    <h2>🎙️ Gravar Áudio Agora</h2>
+    <h2>Gravar Áudio Agora</h2>
 
     <div class="recording-controls">
         <button id="startRecord" class="record-btn">Iniciar Gravação</button>
